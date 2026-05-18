@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import stdcrd.model.Student;
 import stdcrd.repository.UserRepository;
 
-import java.util.List;
 
 @Controller
 public class StudentController {
 
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+    private final UserRepository userRepository;
+
+    public StudentController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/")
     public String homePage(Model model) {
