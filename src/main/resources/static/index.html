@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student List Management CRUD App</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    .feature-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-width: 250px; /* Ensures cards don't shrink too small on mobile column scroll */
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+    /* Custom scrollbar styling for the horizontal column layout on mobile */
+    .custom-col-row::-webkit-scrollbar {
+      height: 6px;
+    }
+    .custom-col-row::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">
+      <i class="bi bi-mortarboard-fill me-2 text-primary"></i>StudentCRUD
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- d-flex and align-items-center fixes button alignment across all screens -->
+      <ul class="navbar-nav ms-auto d-flex align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/students">View Students</a>
+        </li>
+        <li class="nav-item py-2 py-lg-0 ms-lg-2">
+          <a class="btn btn-primary btn-sm px-3" href="/students/new">Add Student</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="bg-white py-5 border-bottom">
+  <div class="container py-4 text-center">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1 class="display-4 fw-bold text-dark mb-3">Student List Management CRUD App</h1>
+        <p class="lead text-muted mb-4">A streamlined dashboard application designed to manage student records, monitor enrollment details, and handle academic data effortlessly.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <a href="/students" class="btn btn-primary btn-lg px-4 gap-3">
+            <i class="bi bi-people-fill me-2"></i>Manage Dashboard
+          </a>
+          <a href="/students/new" class="btn btn-outline-secondary btn-lg px-4">
+            <i class="bi bi-plus-circle me-2"></i>Quick Register
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Features Columns Section -->
+<section class="py-5 flex-grow-1">
+  <div class="container-fluid px-4 mx-auto" style="max-width: 1400px;">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Application Features</h2>
+      <p class="text-muted">Everything you need to seamlessly manage student data lined up in a single workflow view.</p>
+    </div>
+
+    <!-- flex-nowrap and overflow-x-auto makes it an elegant row of columns -->
+    <div class="row flex-nowrap overflow-x-auto pb-4 g-3 custom-col-row">
+
+      <!-- Feature 1: Student List -->
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box bg-primary-subtle text-primary mb-3">
+              <i class="bi bi-list-columns-reverse fs-4"></i>
+            </div>
+            <h6 class="card-title fw-bold text-dark">Student List Page</h6>
+            <p class="card-text text-muted small">View a complete, paginated, and sortable roster of all registered students in the system.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: Student Details -->
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box bg-info-subtle text-info mb-3">
+              <i class="bi bi-person-vcard fs-4"></i>
+            </div>
+            <h6 class="card-title fw-bold text-dark">Student Details Page</h6>
+            <p class="card-text text-muted small">Access deep-dive profiles for individual students, showcasing contact information and deep logs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Create Student -->
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box bg-success-subtle text-success mb-3">
+              <i class="bi bi-person-plus fs-4"></i>
+            </div>
+            <h6 class="card-title fw-bold text-dark">Create Student</h6>
+            <p class="card-text text-muted small">Easily register new students using an intuitive form backed by real-time data validation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 4: Update Student -->
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box bg-warning-subtle text-warning mb-3">
+              <i class="bi bi-pencil-square fs-4"></i>
+            </div>
+            <h6 class="card-title fw-bold text-dark">Update Student</h6>
+            <p class="card-text text-muted small">Keep student information accurate and current with seamless dynamic editing forms.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 5: Delete Student -->
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box bg-danger-subtle text-danger mb-3">
+              <i class="bi bi-trash3 fs-4"></i>
+            </div>
+            <h6 class="card-title fw-bold text-dark">Delete Student</h6>
+            <p class="card-text text-muted small">Safely remove student records from the database with built-in confirmations.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white-50 text-center py-4 border-top border-secondary mt-auto">
+  <div class="container">
+    <small>&copy; 2026 StudentCRUD Admin. All rights reserved.</small>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
