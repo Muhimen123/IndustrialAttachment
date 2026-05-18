@@ -18,12 +18,21 @@ public class StudentController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/")
+    public String homePage(Model model) {
+        // Sets the active navbar link highlight state to 'home'
+        model.addAttribute("activePage", "home");
+
+        return "index"; // Looks for templates/index.html
+    }
+
     // 1. Display the Form
     @GetMapping("/students/new")
     public String createStudentForm(Model model) {
         // This empty student object holds the form data
         Student student = new Student();
         model.addAttribute("student", student);
+        model.addAttribute("activePage", "add");
         return "student/create_student";
     }
 
@@ -45,6 +54,7 @@ public class StudentController {
 
         // Pass the list to the Thymeleaf HTML view
         model.addAttribute("students", students);
+        model.addAttribute("activePage", "list");
 
         return "student/list_students";
     }
@@ -71,10 +81,6 @@ public class StudentController {
     public String updateStudent(@PathVariable("id") Long id, @ModelAttribute("student") Student student) {
         // Enforce the correct ID so Hibernate updates the existing row instead of inserting a new one
         student.setId(id);
-
-        System.out.println("========================================");
-        System.out.println("UPDATING STUDENT ID " + id + ": " + student.getName());
-        System.out.println("========================================");
 
         // Save automatically updates if the entity ID already exists in the DB
         userRepository.save(student);

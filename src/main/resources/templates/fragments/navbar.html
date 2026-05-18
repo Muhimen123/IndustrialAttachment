@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+<nav th:fragment="studentNavbar(activePage)"
+     class="navbar navbar-expand-lg shadow-sm"
+     style="background-color: #546B41; border-bottom: 3px solid #99AD7A; font-family: 'DM Sans', sans-serif;">
+
+  <div class="container">
+
+    <!-- Brand -->
+    <a class="navbar-brand fw-500 d-flex align-items-center"
+       th:href="@{/}"
+       style="color: #FFF8EC; font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: .01em;">
+      <i class="bi bi-mortarboard-fill me-2" style="color: #99AD7A;"></i>StudentCRUD
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler border-0" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            style="color: #DCCCAC;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto d-flex align-items-lg-center gap-lg-1">
+
+        <!-- Home -->
+        <li class="nav-item">
+          <a th:href="@{/}"
+             th:classappend="${activePage == 'home'} ? 'active' : ''"
+             class="nav-link px-3"
+             style="color: rgba(255,248,236,.75); font-size: .9rem; letter-spacing: .02em; transition: color .15s;"
+             th:style="${activePage == 'home'} ? 'color: #FFF8EC; font-weight: 500;' : 'color: rgba(255,248,236,.75);'">
+            Home
+          </a>
+        </li>
+
+        <!-- View Students -->
+        <li class="nav-item">
+          <a th:href="@{/students}"
+             th:classappend="${activePage == 'list'} ? 'active' : ''"
+             class="nav-link px-3"
+             style="font-size: .9rem; letter-spacing: .02em; transition: color .15s;"
+             th:style="${activePage == 'list'} ? 'color: #FFF8EC; font-weight: 500;' : 'color: rgba(255,248,236,.75);'">
+            View Students
+          </a>
+        </li>
+
+        <!-- Add Student button -->
+        <li class="nav-item py-2 py-lg-0 ms-lg-2">
+          <a th:href="@{/students/new}"
+             th:classappend="${activePage == 'add'} ? 'disabled' : ''"
+             style="background-color: #99AD7A; color: #2e3a26; border: none; border-radius: 0;
+                    padding: .45rem 1.1rem; font-family: 'DM Sans', sans-serif; font-weight: 500;
+                    font-size: .82rem; letter-spacing: .05em; text-transform: uppercase;
+                    text-decoration: none; display: inline-block; transition: background .2s, color .2s;"
+             onmouseover="if(!this.classList.contains('disabled')) this.style.backgroundColor='#DCCCAC';"
+             onmouseout="if(!this.classList.contains('disabled')) this.style.backgroundColor='#99AD7A';">
+            Add Student
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+</body>
+</html>

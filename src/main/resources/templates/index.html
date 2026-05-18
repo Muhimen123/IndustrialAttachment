@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student List Management CRUD App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --forest:  #546B41;
+      --sage:    #99AD7A;
+      --sand:    #DCCCAC;
+      --cream:   #FFF8EC;
+      --ink:     #2e3a26;
+      --muted:   #7a8c6e;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      position: relative;
+    }
+
+    /* ── Crosshatch on body (not hero) ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+              repeating-linear-gradient(
+                      45deg,
+                      transparent,
+                      transparent 38px,
+                      rgba(153,173,122,.13) 38px,
+                      rgba(153,173,122,.13) 40px
+              ),
+              repeating-linear-gradient(
+                      -45deg,
+                      transparent,
+                      transparent 38px,
+                      rgba(84,107,65,.07) 38px,
+                      rgba(84,107,65,.07) 40px
+              );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Everything sits above the pattern */
+    nav, header, section, footer { position: relative; z-index: 1; }
+
+    /* ── Navbar ── */
+    .navbar {
+      background-color: var(--forest) !important;
+      border-bottom: 3px solid var(--sage);
+    }
+    .navbar-brand { color: var(--cream) !important; font-family: 'DM Sans', sans-serif; font-weight: 500; }
+    .navbar-brand i { color: var(--sage) !important; }
+    .nav-link { color: rgba(255,248,236,.75) !important; }
+    .nav-link.active, .nav-link:hover { color: var(--cream) !important; }
+    .navbar .btn-add-nav {
+      background-color: var(--sage);
+      color: var(--ink);
+      border: none;
+      border-radius: 0;
+      font-size: .82rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: .4rem 1rem;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .navbar .btn-add-nav:hover { background-color: var(--sand); }
+
+    /* ── Hero — solid cream, no pattern showing through ── */
+    header.hero {
+      background-color: var(--cream);
+      border-bottom: 2px solid var(--sand);
+      /* Solid layer completely covers the fixed body pattern behind it */
+    }
+
+    header.hero h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      letter-spacing: -.02em;
+    }
+
+    header.hero p.lead { color: var(--muted); }
+
+    .btn-primary-custom {
+      background-color: var(--forest);
+      color: var(--cream);
+      border: 2px solid var(--forest);
+      border-radius: 0;
+      padding: .75rem 1.6rem;
+      font-weight: 500;
+      font-size: .95rem;
+      letter-spacing: .03em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: background .2s, color .2s;
+    }
+    .btn-primary-custom:hover {
+      background-color: var(--sage);
+      border-color: var(--sage);
+      color: var(--ink);
+    }
+
+    .btn-outline-custom {
+      background-color: transparent;
+      color: var(--forest);
+      border: 2px solid var(--sand);
+      border-radius: 0;
+      padding: .75rem 1.6rem;
+      font-weight: 500;
+      font-size: .95rem;
+      letter-spacing: .03em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-outline-custom:hover {
+      border-color: var(--forest);
+      color: var(--ink);
+    }
+
+    /* ── Features section ── */
+    section.features {
+      background: transparent; /* shows crosshatch through */
+    }
+
+    section.features h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+    }
+    section.features .section-sub { color: var(--muted); }
+
+    /* ── Feature cards ── */
+    .feature-card {
+      background: var(--sand);
+      border: 2px solid var(--cream) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      transition: transform 0.2s ease, border-color .2s;
+      min-width: 250px;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sage) !important;
+      box-shadow: none !important;
+    }
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0;
+    }
+
+    /* Icon box palette overrides */
+    .icon-box.list    { background: rgba(84,107,65,.12);  color: var(--forest); }
+    .icon-box.detail  { background: rgba(84,107,65,.12); color: var(--forest); }
+    .icon-box.create  { background: rgba(84,107,65,.12);  color: var(--forest); }
+    .icon-box.update  { background: rgba(84,107,65,.12); color: var(--forest); }
+    .icon-box.delete  { background: rgba(84,107,65,.12);   color: var(--forest); }
+
+    .feature-card .card-title { color: var(--ink); font-weight: 600; }
+    .feature-card .card-text  { color: var(--muted); }
+
+    /* ── Scrollbar ── */
+    .custom-col-row::-webkit-scrollbar { height: 6px; }
+    .custom-col-row::-webkit-scrollbar-thumb { background-color: var(--sand); border-radius: 0; }
+
+    /* ── Footer ── */
+    footer {
+      background-color: var(--forest) !important;
+      border-top: 3px solid var(--sage) !important;
+      color: var(--sand) !important;
+    }
+    footer small { color: var(--sand); }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<!--<nav class="navbar navbar-expand-lg shadow-sm">-->
+<!--  <div class="container">-->
+<!--    <a class="navbar-brand fw-bold" href="#">-->
+<!--      <i class="bi bi-mortarboard-fill me-2"></i>StudentCRUD-->
+<!--    </a>-->
+<!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">-->
+<!--      <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+<!--    <div class="collapse navbar-collapse" id="navbarNav">-->
+<!--      <ul class="navbar-nav ms-auto d-flex align-items-lg-center">-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link active" href="#">Home</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="/students">View Students</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item py-2 py-lg-0 ms-lg-2">-->
+<!--          <a class="btn-add-nav" href="/students/new">Add Student</a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->
+<div th:replace="~{fragments/navbar :: studentNavbar('home')}"></div>
+
+<!-- Hero Section -->
+<header class="hero py-5 border-bottom">
+  <div class="container py-4 text-center">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1 class="display-4 fw-bold mb-3">Student List Management CRUD App</h1>
+        <p class="lead mb-4">A streamlined dashboard application designed to manage student records, monitor enrollment details, and handle academic data effortlessly.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <a href="/students" class="btn-primary-custom">
+            <i class="bi bi-people-fill me-2"></i>Manage Dashboard
+          </a>
+          <a href="/students/new" class="btn-outline-custom ms-sm-2">
+            <i class="bi bi-plus-circle me-2"></i>Quick Register
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Features Section -->
+<section class="features py-5 flex-grow-1">
+  <div class="container-fluid px-4 mx-auto" style="max-width: 1400px;">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Application Features</h2>
+      <p class="section-sub">Everything you need to seamlessly manage student data lined up in a single workflow view.</p>
+    </div>
+
+    <div class="row flex-nowrap overflow-x-auto pb-4 g-3 custom-col-row">
+
+      <!-- Feature 1 -->
+      <div class="col">
+        <div class="card h-100 border-0 feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box list mb-3">
+              <i class="bi bi-list-columns-reverse fs-4"></i>
+            </div>
+            <h6 class="card-title">Student List Page</h6>
+            <p class="card-text small">View a complete, paginated, and sortable roster of all registered students in the system.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="col">
+        <div class="card h-100 border-0 feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box detail mb-3">
+              <i class="bi bi-person-vcard fs-4"></i>
+            </div>
+            <h6 class="card-title">Student Details Page</h6>
+            <p class="card-text small">Access deep-dive profiles for individual students, showcasing contact information and deep logs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="col">
+        <div class="card h-100 border-0 feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box create mb-3">
+              <i class="bi bi-person-plus fs-4"></i>
+            </div>
+            <h6 class="card-title">Create Student</h6>
+            <p class="card-text small">Easily register new students using an intuitive form backed by real-time data validation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="col">
+        <div class="card h-100 border-0 feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box update mb-3">
+              <i class="bi bi-pencil-square fs-4"></i>
+            </div>
+            <h6 class="card-title">Update Student</h6>
+            <p class="card-text small">Keep student information accurate and current with seamless dynamic editing forms.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="col">
+        <div class="card h-100 border-0 feature-card p-3">
+          <div class="card-body d-flex flex-column align-items-start">
+            <div class="icon-box delete mb-3">
+              <i class="bi bi-trash3 fs-4"></i>
+            </div>
+            <h6 class="card-title">Delete Student</h6>
+            <p class="card-text small">Safely remove student records from the database with built-in confirmations.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-4 mt-auto">
+  <div class="container">
+    <small>&copy; 2026 StudentCRUD Admin. All rights reserved.</small>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

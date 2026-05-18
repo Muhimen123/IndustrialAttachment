@@ -4,59 +4,424 @@
     <meta charset="UTF-8">
     <title>Student List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
-        /* Highlight the row on hover and indicate it is clickable */
-        .clickable-row {
+        :root {
+            --forest:  #546B41;
+            --sage:    #99AD7A;
+            --sand:    #DCCCAC;
+            --cream:   #FFF8EC;
+            --ink:     #2e3a26;
+            --muted:   #7a8c6e;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ── Geometric background pattern ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                    repeating-linear-gradient(
+                            45deg,
+                            transparent,
+                            transparent 38px,
+                            rgba(153,173,122,.13) 38px,
+                            rgba(153,173,122,.13) 40px
+                    ),
+                    repeating-linear-gradient(
+                            -45deg,
+                            transparent,
+                            transparent 38px,
+                            rgba(84,107,65,.07) 38px,
+                            rgba(84,107,65,.07) 40px
+                    );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Accent blobs ── */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(153,173,122,.22) 0%, transparent 70%);
+            top: -120px;
+            right: -120px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blob-bottom {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(220,204,172,.35) 0%, transparent 70%);
+            bottom: -100px;
+            left: -80px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Navbar override ── */
+        .navbar, nav {
+            background-color: var(--forest) !important;
+            border-bottom: 3px solid var(--sage);
+        }
+        .navbar-brand, .nav-link { color: var(--cream) !important; }
+        .nav-link:hover { color: var(--sand) !important; }
+
+        /* ── Layout ── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 1rem 4rem;
+        }
+
+        /* ── Card ── */
+        .list-card {
+            background: var(--cream);
+            border: 2px solid var(--sand);
+            border-radius: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ── Card header ── */
+        .list-header {
+            background-color: var(--forest);
+            padding: 1.6rem 2rem 1.4rem 2rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .list-header-left {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+        }
+
+        .list-header .icon-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--sage);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .list-header .icon-wrap i {
+            font-size: 1.2rem;
+            color: var(--cream);
+        }
+
+        .list-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--cream);
+            margin: 0;
+            letter-spacing: -.02em;
+        }
+
+        .list-header p {
+            color: var(--sand);
+            margin: .1rem 0 0;
+            font-size: .83rem;
+            font-weight: 300;
+        }
+
+        /* corner decoration */
+        .list-header::after {
+            content: '';
+            position: absolute;
+            bottom: -18px; right: 28px;
+            width: 36px; height: 36px;
+            background: var(--sage);
+            transform: rotate(45deg);
+            z-index: 0;
+        }
+
+        /* ── Add button ── */
+        .btn-add {
+            background-color: var(--sage);
+            color: var(--ink);
+            border: 2px solid var(--sage);
+            border-radius: 0;
+            padding: .5rem 1.1rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: .82rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            white-space: nowrap;
+            transition: background .2s, color .2s, transform .1s;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .btn-add:hover {
+            background-color: var(--cream);
+            border-color: var(--cream);
+            color: var(--forest);
+            transform: translateY(-1px);
+        }
+
+        /* ── Card body ── */
+        .list-body {
+            padding: 2rem 2rem 1.5rem;
+        }
+
+        /* ── Table ── */
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .92rem;
+        }
+
+        .student-table thead tr {
+            background-color: var(--sand);
+            border-bottom: 2px solid var(--forest);
+        }
+
+        .student-table thead th {
+            font-weight: 500;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--forest);
+            padding: .8rem 1rem;
+            border: none;
+        }
+
+        .student-table tbody tr {
+            border-bottom: 1px solid var(--sand);
+            transition: background .15s;
             cursor: pointer;
+        }
+
+        .student-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .student-table tbody tr:hover {
+            background-color: rgba(153,173,122,.12);
+        }
+
+        .student-table tbody td {
+            padding: .85rem 1rem;
+            color: var(--ink);
+            border: none;
+            vertical-align: middle;
+        }
+
+        /* ID badge */
+        .id-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--sand);
+            color: var(--forest);
+            font-weight: 600;
+            font-size: .8rem;
+            min-width: 32px;
+            height: 28px;
+            padding: 0 .5rem;
+            letter-spacing: .04em;
+        }
+
+        /* student name */
+        .student-name {
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        /* email */
+        .student-email {
+            color: var(--muted);
+            font-size: .88rem;
+        }
+
+        /* ── Action buttons ── */
+        .btn-details {
+            background: transparent;
+            border: 1px solid var(--forest);
+            color: var(--forest);
+            border-radius: 0;
+            padding: .3rem .75rem;
+            font-size: .78rem;
+            font-weight: 500;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background .15s, color .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .btn-details:hover {
+            background: var(--forest);
+            color: var(--cream);
+        }
+
+        .btn-del {
+            background: transparent;
+            border: 1px solid #b85c4a;
+            color: #b85c4a;
+            border-radius: 0;
+            padding: .3rem .75rem;
+            font-size: .78rem;
+            font-weight: 500;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background .15s, color .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .btn-del:hover {
+            background: #b85c4a;
+            color: #fff;
+        }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 3.5rem 1rem;
+            color: var(--muted);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: var(--sand);
+            display: block;
+            margin-bottom: .8rem;
+        }
+
+        .empty-state p {
+            font-size: .95rem;
+            margin: 0;
+        }
+
+        /* ── Row count footer ── */
+        .list-footer {
+            padding: .8rem 2rem;
+            background: var(--sand);
+            font-size: .78rem;
+            color: var(--muted);
+            font-weight: 500;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: .4rem;
         }
     </style>
 </head>
-<body class="bg-light">
 
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <h3 class="mb-0">Registered Students</h3>
-            <a th:href="@{/students/new}" class="btn btn-primary btn-sm">Add New Student</a>
-        </div>
-        <div class="card-body p-4">
+<body>
+<div class="blob-bottom"></div>
 
-            <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered align-middle">
-                    <thead class="table-dark">
-                    <tr>
-                        <th scope="col" style="width: 10%;">ID</th>
-                        <th scope="col" style="width: 40%;">Full Name</th>
-                        <th scope="col" style="width: 30%;">Email Address</th>
-                        <th scope="col" style="width: 20%;" class="text-center">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- Added 'clickable-row' class and 'data-href' attribute for JavaScript row clicking -->
-                    <tr th:each="student : ${students}"
-                        class="clickable-row"
-                        th:data-href="@{/students/{id}(id=${student.id})}">
+<div th:replace="~{fragments/navbar :: studentNavbar(${activePage})}"></div>
 
-                        <td th:text="${student.id}" class="fw-bold text-secondary">1</td>
-                        <td th:text="${student.name}">Student Name</td>
-                        <td th:text="${student.email}">student@email.com</td>
+<div class="page-wrap">
+    <div class="container">
 
-                        <!-- Context Options Column -->
-                        <td class="text-center action-buttons">
-                            <a th:href="@{/students/{id}(id=${student.id})}" class="btn btn-info btn-sm me-1">Details</a>
-                            <a th:href="@{/students/delete/{id}(id=${student.id})}"
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
-                        </td>
-                    </tr>
+        <div class="list-card">
 
-                    <tr th:if="${#lists.isEmpty(students)}">
-                        <td colspan="4" class="text-center text-muted py-4">
-                            No students found in the database.
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <!-- Header -->
+            <div class="list-header">
+                <div class="list-header-left">
+                    <div class="icon-wrap">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Registered Students</h3>
+                        <p>Click any row to view full details.</p>
+                    </div>
+                </div>
+                <a th:href="@{/students/new}" class="btn-add">
+                    <i class="bi bi-plus-lg"></i> Add Student
+                </a>
+            </div>
+
+            <!-- Table -->
+            <div class="list-body">
+                <div class="table-responsive">
+                    <table class="student-table">
+                        <thead>
+                        <tr>
+                            <th style="width: 8%;">ID</th>
+                            <th style="width: 35%;">Full Name</th>
+                            <th style="width: 35%;">Email Address</th>
+                            <th style="width: 22%;" class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="student : ${students}"
+                            class="clickable-row"
+                            th:data-href="@{/students/{id}(id=${student.id})}">
+
+                            <td><span class="id-badge" th:text="${student.id}">1</span></td>
+                            <td><span class="student-name" th:text="${student.name}">Student Name</span></td>
+                            <td><span class="student-email" th:text="${student.email}">student@email.com</span></td>
+                            <td class="text-center action-buttons">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a th:href="@{/students/{id}(id=${student.id})}" class="btn-details">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+                                    <a th:href="@{/students/delete/{id}(id=${student.id})}"
+                                       class="btn-del"
+                                       onclick="return confirm('Are you sure you want to delete this student?');">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(students)}">
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i class="bi bi-inbox"></i>
+                                    <p>No students found in the database.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer count -->
+            <div class="list-footer">
+                <i class="bi bi-person-lines-fill"></i>
+                <span th:text="${#lists.size(students)} + ' student(s) enrolled'">0 student(s) enrolled</span>
             </div>
 
         </div>
@@ -65,12 +430,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // JavaScript to make the table row clickable, excluding the action buttons
     document.addEventListener("DOMContentLoaded", () => {
-        const rows = document.querySelectorAll(".clickable-row");
-        rows.forEach(row => {
+        document.querySelectorAll(".clickable-row").forEach(row => {
             row.addEventListener("click", (e) => {
-                // Ensure clicking the action buttons or links doesn't trigger the row click redirect
                 if (!e.target.closest('.action-buttons')) {
                     window.location.href = row.dataset.href;
                 }
