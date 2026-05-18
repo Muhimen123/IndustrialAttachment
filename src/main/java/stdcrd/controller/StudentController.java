@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 import stdcrd.model.Student;
 import stdcrd.repository.UserRepository;
 
@@ -48,12 +52,23 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public String listStudents(Model model) {
-        // Fetch all students from Supabase using your UserRepository
-        List<Student> students = userRepository.findAll();
+    public String listStudents(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            Model model) {
 
-        // Pass the list to the Thymeleaf HTML view
-        model.addAttribute("students", students);
+        // 1. Create a pageable configuration slice
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 2. Fetch the paginated dataset out of your UserRepository
+        Page<Student> studentPage = userRepository.findAll(pageable);
+
+        // 3. Pass data properties to your template
+        model.addAttribute("students", studentPage.getContent()); // The list of items on current page
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", studentPage.getTotalPages());
+        model.addAttribute("totalItems", studentPage.getTotalElements());
+        model.addAttribute("pageSize", size); // Keeps track of chosen dropdown option
         model.addAttribute("activePage", "list");
 
         return "student/list_students";
