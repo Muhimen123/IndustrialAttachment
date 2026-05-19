@@ -1,0 +1,68 @@
+/* ════════════════════════════════════════════════════
+   INDEX.CSS — Home / Landing Page
+   Page-specific styles only. Shared styles live in globals.css.
+   ════════════════════════════════════════════════════ */
+
+/* ── Hero Section ── */
+header.hero {
+    background-color: var(--cream);
+    border-bottom: 2px solid var(--sand);
+    /* Solid layer completely covers the fixed body pattern behind it */
+}
+
+header.hero h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--ink);
+    letter-spacing: -.02em;
+}
+
+header.hero p.lead { color: var(--muted); }
+
+/* ── Features Section ── */
+section.features {
+    background: transparent; /* crosshatch shows through */
+}
+
+section.features h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--ink);
+}
+
+section.features .section-sub { color: var(--muted); }
+
+/* ── Feature Cards ── */
+/* background needs !important to override Bootstrap's --bs-card-bg on .card */
+.feature-card {
+    background: var(--cream) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: transform 0.2s ease, border-color .2s, background .2s;
+    min-width: 250px;
+}
+
+.feature-card:hover {
+    /*background: var(--sand) !important; !* sand darkened slightly — gives visible color shift *!*/
+    transform: translateY(-4px);
+    border-color: var(--ink) !important;
+    box-shadow: none !important;
+}
+
+.card-title { color: var(--ink); font-weight: 600; }
+.card-text  { color: var(--muted); }
+
+/* ── Icon Box (feature card icons — different from .icon-wrap) ── */
+.icon-box {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    background: rgba(84,107,65,.12);
+    color: var(--forest);
+}
+
+/* ── Horizontal Scroll Row ── */
+.custom-col-row::-webkit-scrollbar       { height: 6px; }
+.custom-col-row::-webkit-scrollbar-thumb { background-color: var(--sand); border-radius: 0; }

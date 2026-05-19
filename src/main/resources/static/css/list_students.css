@@ -1,0 +1,215 @@
+/* ════════════════════════════════════════════════════
+   LIST_STUDENTS.CSS — Student List / Dashboard Page
+   Page-specific styles only. Shared styles live in globals.css.
+   ════════════════════════════════════════════════════ */
+
+/* ── List Card ── */
+.list-card {
+    /* Shell styles (bg, border, radius, overflow) come from globals.css.
+       No max-width constraint — this card fills the container. */
+}
+
+/* ── List Header Layout ── */
+.list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.list-header-left {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+}
+
+/* Smaller icon-wrap variant for the list header */
+.list-header .icon-wrap {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0; /* override globals default */
+}
+
+/* ── Header Controls (right side of list header) ── */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Page-size dropdown
+   All !important needed to beat Bootstrap's .form-select specificity.
+   background-image replaces Bootstrap's dark SVG chevron with a cream one. */
+.select-size {
+    background-color: transparent !important;
+    color: var(--cream) !important;
+    border: 1px solid var(--sage) !important;
+    border-radius: 0 !important;
+    padding: 0.45rem 2rem 0.45rem 0.75rem !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFF8EC' d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.65rem center !important;
+    background-size: 12px !important;
+    box-shadow: none !important;
+}
+
+.select-size option {
+    background-color: var(--ink);
+    color: var(--cream);
+}
+
+/* "Add Student" button inside list header */
+.btn-add {
+    background-color: var(--sage);
+    color: var(--ink);
+    border: 2px solid var(--sage);
+    border-radius: 0;
+    padding: .5rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: .82rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: background .2s, color .2s, transform .1s;
+}
+
+.btn-add:hover {
+    background-color: var(--cream);
+    border-color: var(--cream);
+    color: var(--forest);
+    transform: translateY(-1px);
+}
+
+/* ── List Body ── */
+.list-body {
+    padding: 2rem 2rem 1.5rem;
+}
+
+/* ── Student Table ── */
+.student-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92rem;
+}
+
+.student-table thead tr {
+    background-color: var(--sand);
+    border-bottom: 2px solid var(--forest);
+}
+
+.student-table thead th {
+    font-weight: 500;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--forest);
+    padding: .8rem 1rem;
+    border: none;
+}
+
+.student-table tbody tr {
+    border-bottom: 1px solid var(--sand);
+    transition: background .15s;
+    cursor: pointer;
+}
+
+.student-table tbody tr:last-child { border-bottom: none; }
+
+.student-table tbody tr:hover { background-color: rgba(153,173,122,.12); }
+
+.student-table tbody td {
+    padding: .85rem 1rem;
+    color: var(--ink);
+    border: none;
+    vertical-align: middle;
+}
+
+/* ── ID Badge ── */
+.id-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sand);
+    color: var(--forest);
+    font-weight: 600;
+    font-size: .8rem;
+    min-width: 32px;
+    height: 28px;
+    padding: 0 .5rem;
+    letter-spacing: .04em;
+}
+
+/* ── Cell text helpers ── */
+.student-name  { font-weight: 500; color: var(--ink); }
+.student-email { color: var(--muted); font-size: .88rem; }
+
+/* ── Empty State ── */
+.empty-state {
+    text-align: center;
+    padding: 3.5rem 1rem;
+    color: var(--muted);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: var(--sand);
+    display: block;
+    margin-bottom: .8rem;
+}
+
+/* ── Pagination ── */
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 2rem 1.5rem;
+}
+
+.pagination-custom .page-item .page-link {
+    color: var(--forest);
+    background-color: var(--cream);
+    border: 1px solid var(--sand);
+    border-radius: 0 !important;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+}
+
+.pagination-custom .page-item.active .page-link {
+    background-color: var(--forest);
+    border-color: var(--forest);
+    color: var(--cream);
+}
+
+.pagination-custom .page-item.disabled .page-link {
+    background-color: var(--cream);
+    color: var(--sand);
+}
+
+.pagination-custom .page-link:hover:not(.active) {
+    background-color: var(--sand);
+    color: var(--ink);
+}
+
+/* ── List Footer (row count bar) ── */
+.list-footer {
+    padding: .8rem 2rem;
+    background: var(--sand);
+    font-size: .78rem;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}

@@ -1,3 +1,9 @@
+/* ════════════════════════════════════════════════════
+   GLOBALS.CSS — Student CRUD App
+   Shared design tokens + reusable component styles
+   ════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ── */
 :root {
     --forest:  #546B41;
     --sage:    #99AD7A;
@@ -7,8 +13,19 @@
     --muted:   #7a8c6e;
 }
 
+/* ── Box Sizing Reset ── */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* ── Body ── */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ── Crosshatch Background Pattern ── */
 body::before {
     content: '';
     position: fixed;
@@ -32,17 +49,356 @@ body::before {
     z-index: 0;
 }
 
-body {
-    font-family: 'DM Sans', sans-serif;
-    background-color: var(--cream);
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-}
+/* ── Stacking Context — keep content above pattern ── */
+nav, header, section, footer { position: relative; z-index: 1; }
 
+
+/* ════════════════════════════════════════════════════
+   NAVBAR
+   ════════════════════════════════════════════════════ */
+
+.navbar,
 nav {
     background-color: var(--forest) !important;
     border-bottom: 3px solid var(--sage);
 }
 
-nav, header, section, footer { position: relative; z-index: 1; }
+.navbar-brand i  { color: var(--sage) !important; }
+.navbar-brand,
+.nav-link        { color: var(--cream) !important; }
+.nav-link:hover  { color: var(--sand)  !important; }
+
+/* Inline "Add" button in the navbar */
+.navbar .btn-add-nav {
+    background-color: var(--sage);
+    color: var(--ink);
+    border: none;
+    border-radius: 0;
+    font-size: .82rem;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: .4rem 1rem;
+    text-decoration: none;
+    transition: background .2s;
+}
+.navbar .btn-add-nav:hover { background-color: var(--sand); }
+
+
+/* ════════════════════════════════════════════════════
+   PAGE WRAPPER  (used on create / list / detail pages)
+   ════════════════════════════════════════════════════ */
+
+.page-wrap {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1rem 4rem;
+}
+
+
+/* ════════════════════════════════════════════════════
+   CARD SHELL  (shared by reg-card / list-card / detail-card)
+   Apply these base rules via the shared .app-card class,
+   or keep page-specific names — the properties are identical.
+   ════════════════════════════════════════════════════ */
+
+.app-card,
+.reg-card,
+.list-card,
+.detail-card {
+    background: var(--cream);
+    border: 2px solid var(--sand);
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Constrained-width cards (create & detail pages) */
+.reg-card,
+.detail-card {
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+
+/* ════════════════════════════════════════════════════
+   CARD HEADER  (shared by reg-header / list-header / detail-header)
+   ════════════════════════════════════════════════════ */
+
+.app-card-header,
+.reg-header,
+.list-header,
+.detail-header {
+    background-color: var(--forest);
+    padding: 1.6rem 2rem 1.4rem;
+    position: relative;
+}
+
+/* Diamond corner decoration */
+.app-card-header::after,
+.reg-header::after,
+.list-header::after,
+.detail-header::after {
+    content: '';
+    position: absolute;
+    bottom: -18px; right: 28px;
+    width: 36px; height: 36px;
+    background: var(--sage);
+    transform: rotate(45deg);
+    z-index: 0;
+}
+
+/* Heading inside card headers */
+.app-card-header h3,
+.reg-header h3,
+.list-header h3,
+.detail-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--cream);
+    margin: 0;
+    letter-spacing: -.02em;
+}
+
+/* Subtext inside card headers */
+.app-card-header p,
+.reg-header p,
+.list-header p,
+.detail-header p {
+    color: var(--sand);
+    margin: .1rem 0 0;
+    font-size: .83rem;
+    font-weight: 300;
+}
+
+
+/* ════════════════════════════════════════════════════
+   ICON WRAP  (circular sage badge used in every header)
+   ════════════════════════════════════════════════════ */
+
+.icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: .9rem;
+    flex-shrink: 0;
+}
+
+.icon-wrap i {
+    font-size: 1.3rem;
+    color: var(--cream);
+}
+
+
+/* ════════════════════════════════════════════════════
+   FORM ELEMENTS
+   ════════════════════════════════════════════════════ */
+
+.form-label {
+    font-weight: 500;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--forest);
+    margin-bottom: .45rem;
+}
+
+.form-control {
+    background: #fff !important;
+    border: 2px solid var(--sand) !important;
+    border-radius: 0 !important;
+    padding: .7rem 1rem !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: .95rem !important;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+    transition: border-color .2s, background .2s;
+}
+
+.form-control::placeholder { color: #b8af9e; }
+
+.form-control:focus {
+    border-color: var(--forest) !important;
+    background: var(--cream) !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+/* Icon prefix inside input groups */
+.input-group-text {
+    background: var(--sand) !important;
+    border: 2px solid var(--sand) !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    color: var(--forest) !important;
+}
+
+/* Remove double left border when input follows an icon */
+.input-group .form-control        { border-left: none !important; }
+.input-group .form-control:focus  { border-left: none !important; }
+
+/* Thin dashed divider between form fields */
+.field-divider {
+    border: none;
+    border-top: 1px dashed var(--sand);
+    margin: 1.4rem 0;
+}
+
+
+/* ════════════════════════════════════════════════════
+   BUTTONS  (shared variants)
+   ════════════════════════════════════════════════════ */
+
+/* ── Primary / Submit / Save  (forest fill) ── */
+.btn-primary-custom,
+.btn-submit,
+.btn-save {
+    background-color: var(--forest);
+    color: var(--cream);
+    border: 2px solid var(--forest);
+    border-radius: 0;
+    padding: .75rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: .95rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    cursor: pointer;
+    transition: background .2s, color .2s, transform .1s;
+}
+
+.btn-primary-custom:hover,
+.btn-submit:hover,
+.btn-save:hover {
+    background-color: var(--sage);
+    border-color: var(--sage);
+    color: var(--ink);
+    transform: translateY(-2px);
+}
+
+.btn-primary-custom:active,
+.btn-submit:active,
+.btn-save:active { transform: translateY(0); }
+
+/* Compact size override (save button on detail page) */
+.btn-save {
+    padding: .65rem 1.4rem;
+    font-size: .88rem;
+}
+
+/* Full-width override (submit button on create page) */
+.btn-submit {
+    width: 100%;
+    justify-content: center;
+}
+
+/* ── Outline / Cancel  (transparent, sand border) ── */
+.btn-outline-custom,
+.btn-cancel {
+    background-color: transparent;
+    color: var(--forest);
+    border: 2px solid var(--sand);
+    border-radius: 0;
+    padding: .75rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: .95rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    transition: border-color .2s, color .2s;
+}
+
+.btn-outline-custom:hover,
+.btn-cancel:hover {
+    border-color: var(--forest);
+    color: var(--ink);
+}
+
+/* Compact size override (cancel button on detail page) */
+.btn-cancel {
+    padding: .65rem 1.2rem;
+    font-size: .88rem;
+    color: var(--muted);
+}
+
+.btn-cancel:hover { border-color: var(--muted); }
+
+/* ── Destructive / Delete  (red outline) ── */
+.btn-delete,
+.btn-del {
+    background: transparent;
+    color: #b85c4a;
+    border: 2px solid #b85c4a;
+    border-radius: 0;
+    padding: .65rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: .88rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    transition: background .2s, color .2s;
+}
+
+.btn-delete:hover,
+.btn-del:hover {
+    background: #b85c4a;
+    color: #fff;
+}
+
+/* Compact table variant */
+.btn-del {
+    padding: .3rem .75rem;
+    font-size: .78rem;
+}
+
+/* ── Details / View  (forest outline, table-row sized) ── */
+.btn-details {
+    background: transparent;
+    border: 1px solid var(--forest);
+    color: var(--forest);
+    border-radius: 0;
+    padding: .3rem .75rem;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    transition: background .15s, color .15s;
+}
+
+.btn-details:hover {
+    background: var(--forest);
+    color: var(--cream);
+}
+
+
+/* ════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════ */
+
+footer {
+    background-color: var(--forest) !important;
+    border-top: 3px solid var(--sage) !important;
+    color: var(--sand) !important;
+}
+
+footer small { color: var(--sand); }

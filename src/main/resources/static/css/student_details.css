@@ -1,0 +1,48 @@
+/* ════════════════════════════════════════════════════
+   STUDENT_DETAILS.CSS — Edit Student Profile Page
+   Page-specific styles only. Shared styles live in globals.css.
+   ════════════════════════════════════════════════════ */
+
+/* ── Detail Card Header (slightly more padding than list-header) ── */
+.detail-header {
+    padding: 2rem 2rem 1.6rem;
+}
+
+/* ── Card Body ── */
+.detail-body {
+    padding: 2.5rem 2.5rem 2rem;
+}
+
+/* ── Read-only Student ID Row ── */
+.id-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--sand);
+    padding: .75rem 1rem;
+    margin-bottom: 1.6rem;
+}
+
+.id-row .id-label {
+    font-size: .75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.id-row .id-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--forest);
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ── Action Divider (heavier than field-divider) ── */
+.action-divider {
+    border: none;
+    border-top: 2px solid var(--sand);
+    margin: 1.8rem 0 1.4rem;
+}
