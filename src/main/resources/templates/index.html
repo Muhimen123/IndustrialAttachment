@@ -4,62 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student List Management CRUD App</title>
+  <link th:href="@{/css/globals.css}" rel="stylesheet">
+  <link href="css/globals.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --forest:  #546B41;
-      --sage:    #99AD7A;
-      --sand:    #DCCCAC;
-      --cream:   #FFF8EC;
-      --ink:     #2e3a26;
-      --muted:   #7a8c6e;
-    }
+    /*:root {*/
+    /*  --forest:  #546B41;*/
+    /*  --sage:    #99AD7A;*/
+    /*  --sand:    #DCCCAC;*/
+    /*  --cream:   #FFF8EC;*/
+    /*  --ink:     #2e3a26;*/
+    /*  --muted:   #7a8c6e;*/
+    /*}*/
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--cream);
-      position: relative;
-    }
+    /*body {*/
+    /*  font-family: 'DM Sans', sans-serif;*/
+    /*  background-color: var(--cream);*/
+    /*  position: relative;*/
+    /*}*/
+    /*body {*/
+    /*  font-family: 'DM Sans', sans-serif;*/
+    /*  background-color: var(--cream);*/
+    /*  min-height: 100vh;*/
+    /*  position: relative;*/
+    /*  overflow-x: hidden;*/
+    /*}*/
 
     /* ── Crosshatch on body (not hero) ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-              repeating-linear-gradient(
-                      45deg,
-                      transparent,
-                      transparent 38px,
-                      rgba(153,173,122,.13) 38px,
-                      rgba(153,173,122,.13) 40px
-              ),
-              repeating-linear-gradient(
-                      -45deg,
-                      transparent,
-                      transparent 38px,
-                      rgba(84,107,65,.07) 38px,
-                      rgba(84,107,65,.07) 40px
-              );
-      pointer-events: none;
-      z-index: 0;
-    }
+    /*body::before {*/
+    /*  content: '';*/
+    /*  position: fixed;*/
+    /*  inset: 0;*/
+    /*  background-image:*/
+    /*          repeating-linear-gradient(*/
+    /*                  45deg,*/
+    /*                  transparent,*/
+    /*                  transparent 38px,*/
+    /*                  rgba(153,173,122,.13) 38px,*/
+    /*                  rgba(153,173,122,.13) 40px*/
+    /*          ),*/
+    /*          repeating-linear-gradient(*/
+    /*                  -45deg,*/
+    /*                  transparent,*/
+    /*                  transparent 38px,*/
+    /*                  rgba(84,107,65,.07) 38px,*/
+    /*                  rgba(84,107,65,.07) 40px*/
+    /*          );*/
+    /*  pointer-events: none;*/
+    /*  z-index: 0;*/
+    /*}*/
 
     /* Everything sits above the pattern */
     nav, header, section, footer { position: relative; z-index: 1; }
 
     /* ── Navbar ── */
-    .navbar {
-      background-color: var(--forest) !important;
-      border-bottom: 3px solid var(--sage);
-    }
-    .navbar-brand { color: var(--cream) !important; font-family: 'DM Sans', sans-serif; font-weight: 500; }
     .navbar-brand i { color: var(--sage) !important; }
-    .nav-link { color: rgba(255,248,236,.75) !important; }
-    .nav-link.active, .nav-link:hover { color: var(--cream) !important; }
     .navbar .btn-add-nav {
       background-color: var(--sage);
       color: var(--ink);
